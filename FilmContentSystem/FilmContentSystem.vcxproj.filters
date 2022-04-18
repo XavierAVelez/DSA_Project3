@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\common">
+      <UniqueIdentifier>{2b694979-eb41-4eaf-9889-7e7c269a5730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\data structure">
+      <UniqueIdentifier>{9657e4a1-135e-4221-afb1-6b3a1971d632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\data structure">
+      <UniqueIdentifier>{4d871625-edf2-4f83-b336-035ced559b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\common">
+      <UniqueIdentifier>{87067d27-01a1-479d-8b0d-78ee84d36edf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FilmContentSystemApplication.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FilmInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CharString.h">
+      <Filter>头文件\data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="CharStringLink.h">
+      <Filter>头文件\data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="HashMap.hpp">
+      <Filter>头文件\data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.hpp">
+      <Filter>头文件\data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="WordSegmentor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HtmlParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.hpp">
+      <Filter>头文件\data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="HtmlTag.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
+    <ClInclude Include="FileReader.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
+    <ClInclude Include="BalancedBST.hpp">
+      <Filter>头文件\data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="DocumentList.h">
+      <Filter>头文件\data structure</Filter>
+    </ClInclude>
+    <ClInclude Include="InvertedIndex.hpp">
+      <Filter>头文件\data structure</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FilmContentSystemMain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FilmContentSystemApplication.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FilmInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CharString.cpp">
+      <Filter>源文件\data structure</Filter>
+    </ClCompile>
+    <ClCompile Include="CharStringLink.cpp">
+      <Filter>源文件\data structure</Filter>
+    </ClCompile>
+    <ClCompile Include="WordSegmentor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HtmlParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HtmlTag.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>源文件\common</Filter>
+    </ClCompile>
+    <ClCompile Include="FileReader.cpp">
+      <Filter>源文件\common</Filter>
+    </ClCompile>
+    <ClCompile Include="DocumentList.cpp">
+      <Filter>源文件\data structure</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
