@@ -27,14 +27,19 @@ struct Movie {
 		this->averageRating = avgRating;
 	}
 
-	Movie(string movieID, string title, int year){
+	Movie(string movieID, string title, int year) {
 		this->movieID = movieID;
 		this->title = title;
 		this->year = year;
 	}
 
-	void setRating(double rating) { 
-		this->averageRating = rating; 
+	~Movie()
+	{
+		delete this;
+	}
+
+	void setRating(double rating) {
+		this->averageRating = rating;
 	}
 
 	void setGenre(string genres) {
