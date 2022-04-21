@@ -7,8 +7,8 @@
 
 /*
 TagAttribute
-说明：	用于表示html标签的属性的数据结构，存储了一对键值
-接口：	读取：key/value
+Description: A data structure used to represent attributes of html tags, storing a pair of key values
+Interface: Read: key/value
 */
 
 class TagAttribute {
@@ -24,17 +24,17 @@ public:
 
 /*
 HtmlTag
-说明：	用于表示html标签的数据结构，存储了标签类型、标签属性、标签中的文本内容
-接口：	读取操作：type/attributes/content
-		修改操作：addAttribute/pushContent
-		查询操作：hasAttribute
+Description: The data structure used to represent the html tag, which stores the tag type, tag attributes, and the text content in the tag
+Interface: Read operation: type/attributes/content
+Modify operation: addAttribute/pushContent
+Query operation: hasAttribute
 */
 
 class HtmlTag
 {
-	CharString _type;				// 标签类型
-	Vector<TagAttribute> _attr;		// 标签属性
-	CharString _content;			// 文本内容
+	CharString _type;				
+	Vector<TagAttribute> _attr;		
+	CharString _content;			
 public:
 	HtmlTag();
 	HtmlTag(const CharString &type);
@@ -43,14 +43,14 @@ public:
 	const Vector<TagAttribute>& attributes() const { return _attr; }
 	const CharString &content() const { return _content; }
 	
-	// 添加属性，只有键没有值
+	// Add property, only key without value
 	void addAttribute(const CharString &key);
-	// 添加属性，键值对
+	// Add property, key-value pair
 	void addAttribute(const CharString &key, const CharString &value);
-	// concat到文本内容尾部
+	// concat to the end of the text content
 	void pushContent(const CharString &content);
 
-	// 查找是否有给定属性
+	// Find if there is a given property
 	bool hasAttribute(const CharString &key) const;
 	bool hasAttribute(const CharString &key, const CharString &value) const;
 	CharString attributeValue(const CharString &key) const;

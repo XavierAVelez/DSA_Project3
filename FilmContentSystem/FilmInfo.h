@@ -6,10 +6,10 @@
 
 /*
 FilmInfo
-说明：	存储电影信息解析结果的类
-		电影信息分别有：电影名、内容简介、导演、编剧、主演、类型、地区、语言、上映日期、时长、又名
-接口：	get/set 各信息
-		输出
+Description: A class that stores the results of parsing movie information
+The movie information includes: movie name, content introduction, director, screenwriter, starring, genre, region, language, release date, duration, aka
+Interface: get/set various information
+output
 */
 
 class HtmlParser;
@@ -17,12 +17,12 @@ class FilmInfo
 {
 	friend class HtmlParser;
 private:
-	// 电影名、内容简介
+	// Movie title, content introduction
 	CharString _name, _introduction;
-	// 导演、编剧、主演、类型、地区、语言、上映日期、时长、又名
+	// Director, Writer, Starring, Genre, Region, Language, Release Date, Duration, AKA
 	CharStringLink _directors, _screenwriters, _stars, _genres, _regions, _languages, _dates, _durations, _alternates;
-	CharStringLink _tags;	// 标签
-	double _rating;			// 评分
+	CharStringLink _tags;	//Label
+	double _rating;			// score
 
 public:
 	FilmInfo();

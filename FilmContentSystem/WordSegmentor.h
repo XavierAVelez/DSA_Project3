@@ -8,51 +8,51 @@ const int MAX_HAN_CODE = 50000;
 
 class WordSegmentor
 {
-	// 词典和停用词典，dict中的value存储词频，stopwords中的value无意义（实际上是 HashSet）
+	// Dictionary and stop dictionary, the value in dict stores word frequency, the value in stopwords is meaningless (actually HashSet)
 	HashMap<CharString, int> dict, stopwords;
 	
-	// 记录每个字作为量词结尾的出现次数，用于判断某一词是否为量词
+	// Record the number of occurrences of each word as the end of a quantifier to determine whether a word is a quantifier
 	int *numeralFreq;
 	
-	int totalFreq, numWords;		// 总词频，总词数
-	int maxWordLen;					// 最长的词长
+	int totalFreq, numWords;		
+	int maxWordLen;					
 
-	bool toConcatNumerals;			// 是否连接数字和量词，默认为true
-	bool hasStopwords;				// 是否载入停用词典
-	bool hasHMM;					// 是否载入HMM参数
+	bool toConcatNumerals;			
+	bool hasStopwords;				
+	bool hasHMM;					
 
-	// HMM的参数（对数意义下）
+	// Parameters of HMM (in logarithmic sense)
 	double (*probEmit)[4];
 	double probStart[4];
 	double probTrans[4][4];
 
-	// viterbi算法使用的数组
+	// Arrays used by the viterbi algorithm
 	double *logProb; int *jump;
 	double(*vit)[4]; int *optState;
 	
-	static int state2Idx(char s);	// 将BEMS分别转化为0123
+	static int state2Idx(char s);	
 
-	// 使用HMM来处理连续的单字序列，以识别未登录词
+	//Use HMM to process consecutive word sequences to identify unregistered words
 	void viterbi(const CharString& sentense);
 	CharStringLink cut_HMM(const CharString &sentense);
 
-	// DP求解最大概率分割
+	// DP solves the maximum probability segmentation
 	void calcDAG(const CharString &sentense);
 	
-	// useHMM==false 时调用，直接使用DP分割
+	// Called when useHMM==false, directly use DP segmentation
 	CharStringLink cut_DAG(const CharString &sentense);
-	// useHMM==true 时调用，DP分割后用HMM识别未登录词
+	// Called when useHMM==true, use HMM to identify unregistered words after DP segmentation
 	CharStringLink cut_DAG_HMM(const CharString &sentense);
 
-	// toConcatNumerals==true 时调用，连接数字和量词
+	// Called when toConcatNumerals==true, concatenates numbers and quantifiers
 	CharStringLink concatNumerals(const CharStringLink &words);
-	// useStopwords==true 时调用，移除停用词
+	// Called when useStopwords==true to remove stop words
 	CharStringLink removeStopwords(const CharStringLink& words);
 public:
 	WordSegmentor();
 	~WordSegmentor();
 
-	// 要求 dictFile，hmmFile，stopwordsFile 都为 UTF-8 编码
+	// Require dictFile, hmmFile, stopwordsFile to be UTF-8 encoded
 	bool loadDict(const char *dictFile);
 	void loadHMM(const char *hmmFile);
 	void loadStopwords(const char *stopwordsFile);

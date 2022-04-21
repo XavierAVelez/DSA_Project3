@@ -60,7 +60,6 @@ bool WordSegmentor::loadDict(const char * dictFile)
 			++numWords; totalFreq += freq; maxWordLen = Max(maxWordLen, (int)wcslen(word));
 			dict[word] = freq;
 
-			// numeralFreq: 记录每个字作为量词结尾的出现次数，用于判断某一词是否为量词
 			if (toConcatNumerals && strcmp(POS, "m") == 0)
 				numeralFreq[word[wcslen(word) - 1]]++;
 		}
@@ -165,7 +164,7 @@ void WordSegmentor::viterbi(const CharString & sentense)
 
 	int k = 1;
 	for (int j = 0; j < 4; j++)
-		if (j == 1 || j == 3)	// 最后一字的隐状态只能为 'E' or 'S'
+		if (j == 1 || j == 3)	// The hidden state of the last word can only be 'E' or 'S'
 			if (vit[len - 1][j] > vit[len - 1][k])
 				k = j;
 	optState[len - 1] = k;
@@ -201,7 +200,7 @@ CharStringLink WordSegmentor::cut_HMM(const CharString & sentense)
 				}
 			}
 			else {
-				res.push_back(buf);		// 连续的西文字符（数字和字母）直接作为一词
+				res.push_back(buf);		
 			}
 			buf.clear();
 		}
@@ -232,7 +231,7 @@ void WordSegmentor::calcDAG(const CharString & sentense)
 				}
 			}
 		}
-		if (!hasWord) {		// 若不存在任何以该字开头的词，则只能单字成词
+		if (!hasWord) {		
 			logProb[i] = logProb[i + 1] /* + log(1) */ - logTotalFreq;
 			jump[i] = i + 1;
 		}
@@ -250,7 +249,7 @@ CharStringLink WordSegmentor::cut(const CharString &passage, bool useHMM, bool u
 		else {
 			res.concat(hasHMM && useHMM ? cut_DAG_HMM(sentence) : cut_DAG(sentence));
 			sentence.clear();
-			// res.add_back(passage[i]);	// 标点符号等
+			// res.add_back(passage[i]);	// Punctuation, etc.
 		}
 	}
 	if (!sentence.empty()) {
@@ -264,7 +263,7 @@ CharStringLink WordSegmentor::cut(const CharString &passage, bool useHMM, bool u
 CharStringLink WordSegmentor::concatNumerals(const CharStringLink & words)
 {
 	CharStringLink res;
-	const int nFreqThreshold = 10;	// 通过某词的结尾的字的 numeralFreq 来判断是否为量词的阈值
+	const int nFreqThreshold = 10;	// Determine whether it is the threshold of a quantifier by the numeralFreq of the word at the end of a word
 	for (auto it = words.begin(); it != words.end(); ++it)
 		if (isNumber(*it) && it.next()!=words.end() 
 			&& numeralFreq!=nullptr && numeralFreq[(*(it.next())).back()]>nFreqThreshold) {
@@ -295,7 +294,7 @@ CharStringLink WordSegmentor::cut_DAG(const CharString &sentense)
 			res.add(sentense.substring(p, jump[p]));
 			p = jump[p];
 		}
-		else {		// 合并西文字符（数字和字母）
+		else {		
 			int t = p; 
 			while (p != len && !isHan(sentense[p])) p = jump[p];
 			res.add(sentense.substring(t, p));
@@ -310,7 +309,7 @@ CharStringLink WordSegmentor::cut_DAG_HMM(const CharString & sentense)
 
 	CharStringLink res;
 	int p = 0, len = sentense.length();
-	CharString buf;		// 存储连续的单字序列，用于输入HMM识别
+	CharString buf;		// Stores consecutive word sequences for input to HMM recognition
 	while (p != len) {
 		if (jump[p] == p + 1)
 			buf += sentense[p];

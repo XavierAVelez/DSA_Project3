@@ -41,12 +41,7 @@ void _debug(const char *dictFile, const char *hmmFile, const char* stopwordsFile
 
 int main() {
 	locale::global(locale("chs"));
-	/*_debug("C:\\Users\\Manchery\\Desktop\\实验1材料\\dict_utf-8\\dict.txt",
-		"C:\\Users\\Manchery\\Desktop\\实验1材料\\dict_utf-8\\HMM.txt",
-		"C:\\Users\\Manchery\\Desktop\\实验1材料\\dict_utf-8\\stopwords.txt",
-		"C:\\Users\\Manchery\\Desktop\\实验1材料\\input\\19.html",
-		"C:\\Users\\Manchery\\Desktop\\output.info",
-		"C:\\Users\\Manchery\\Desktop\\output.txt");*/
+
 	_main();
 	_CrtDumpMemoryLeaks();
 	system("pause");

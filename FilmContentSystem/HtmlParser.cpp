@@ -82,8 +82,7 @@ void HtmlReader::skipBlock(wchar_t stopChar)
 
 CharString HtmlReader::readScript()
 {
-	// 假设script标签一定闭合，且闭合标签为 </script>
-	// TODO: maybe </ script>
+
 	CharString res;
 	while (!(html.substring(hp, hp + 9) == L"</script>"))
 		res += html[hp++];
@@ -106,7 +105,7 @@ HtmlParser::~HtmlParser()
 {
 }
 
-// 读取一段由 '<' 和 '>' 包围的标签，调用时 reader 的hp应指向 '<'
+// Read a tag surrounded by '<' and '>', the hp of the reader should point to '<' when called
 HtmlTag HtmlParser::readTag(TagState & closeState)
 {
 	closeState = OPEN;
@@ -126,7 +125,7 @@ HtmlTag HtmlParser::readTag(TagState & closeState)
 
 	HtmlTag tag(tagName);
 
-	while (true){		// 读取标签属性
+	while (true){		
 		CharString key, value;
 
 		wchar_t w;
@@ -156,16 +155,16 @@ HtmlTag HtmlParser::readTag(TagState & closeState)
 	}
 }
 
-// 处理title标签中的文本，具体地，去除首尾空白字符以及“ （豆瓣）”
+
 CharString HtmlParser::postProcessTitle(const CharString & name)
 {
 	int l = 0, r = name.length()-1;
 	while (l <= r && iswspace(name[l])) l++;
 	while (l <= r && iswspace(name[r])) r--;
-	return name.substring(l, r + 1 - 5); // 5 for "_(豆瓣）"
+	return name.substring(l, r + 1 - 5); 
 }
 
-// 处理剧情简介，具体地，去除首尾空白字符，并将<br>转化为 '\n'
+
 CharString HtmlParser::postProcessSummary(const CharString & summary)
 {
 	CharString res; int len = summary.length();
@@ -190,7 +189,7 @@ CharString HtmlParser::postProcessSummary(const CharString & summary)
 	return res;
 }
 
-// 处理info中的一行，具体地，去除开头至冒号，并将后面的内容根据 " / " 断开
+// Process a line in info, specifically, remove the beginning to the colon, and break the following content according to " / "
 void HtmlParser::postProcessInfoLine(const CharString & line, CharStringLink * item)
 {
 	int start = 0, len = line.length();
@@ -207,12 +206,12 @@ void HtmlParser::postProcessInfoLine(const CharString & line, CharStringLink * i
 	}
 }
 
-// 处理包含info的div的文本内容，具体地，分行调用postProcessInfoLine
+// Process the text content of the div containing info, specifically, call postProcessInfoLine by line
 void HtmlParser::postProcessInfo(const CharString & content, FilmInfo & info)
 {
 	const int itemNum = 9;
 	const CharString lineStart[] = {
-		L"导演:",L"编剧:",L"主演:",L"类型:",L"制片国家/地区:",L"语言:",L"上映日期:",L"片长:",L"又名:"
+		L"Director:",L"Screenwriter:",L"Starring:",L"Genre:",L"Production Country/Region:",L"Language:",L"Release Date:",L" Movie Length: ",L" AKA: "
 	};
 	CharStringLink *items[] = {
 		&info._directors, &info._screenwriters, &info._stars, &info._genres, &info._regions, &info._languages, &info._dates, &info._durations, &info._alternates
@@ -226,7 +225,7 @@ void HtmlParser::postProcessInfo(const CharString & content, FilmInfo & info)
 	}
 }
 
-// 处理从栈中弹出的标签，具体地，判断是否为所需电影信息并调用相应函数
+// Process the label popped from the stack, specifically, determine whether it is the required movie information and call the corresponding function
 void HtmlParser::postProcessTag(const HtmlTag & tag, FilmInfo & info)
 {
 	if (tag.type() == L"title") {
@@ -276,10 +275,10 @@ FilmInfo HtmlParser::parse(const CharString & html)
 		case CLOSED:
 			do {
 				lastTop = tags.top(); tags.pop();
-				// 更深层次的标签的文本内容 concat 到上层标签的文本内容尾部
+		
 				if (!tags.empty()) tags.top().pushContent(lastTop.content());
 			} while (!(lastTop.type()==currentTag.type()));
-			// 提取电影信息
+			
 			postProcessTag(lastTop, info);
 			break;
 		case SELFCLOSED:

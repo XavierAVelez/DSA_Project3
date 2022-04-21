@@ -96,7 +96,7 @@ void FilmContentSystemApplication::loadDatabase()
 	else {
 		filmInfos.resize(2000);
 		filmWords.resize(2000);
-		// 遍历输入目录下所有html文件
+		// Traverse all html files in the input directory
 		while (_findnext(lf, &file) == 0) {
 			if (strcmp(file.name, ".") == 0 || strcmp(file.name, "..") == 0)
 				continue;
@@ -118,13 +118,13 @@ void FilmContentSystemApplication::loadDatabase()
 			docCnt = Max(docCnt, docId + 1);
 			if (docId >= filmInfos.size()) filmInfos.resize(docId), filmWords.resize(docId);
 
-			if (_access(infoFile, 0) == 0 && _access(txtFile, 0) == 0) { // 解析和分词结果已经存在
+			if (_access(infoFile, 0) == 0 && _access(txtFile, 0) == 0) {
 				readFilmInfo(infoFile, filmInfos[docId]);
 				readFilmWord(txtFile, filmWords[docId]);
 			}
 			else {
 				std::cerr << "Parsing & processing file " << file.name << "..." << std::endl;
-				// 解析 html
+
 				auto info = extractInfo(filePath);
 				std::wofstream wfout(infoFile);
 				wfout.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
@@ -132,7 +132,6 @@ void FilmContentSystemApplication::loadDatabase()
 				wfout.close();
 				filmInfos[docId] = info;
 
-				// 中文分词：电影名和简介
 				CharStringLink cuts = divideWords(info.name(), useHMM, useStopwords);
 				cuts.concat(divideWords(info.introduction(), useHMM, useStopwords));
 				wfout.open(txtFile);
@@ -189,7 +188,7 @@ Vector<std::pair<int, std::pair<int, int>>> FilmContentSystemApplication::retrie
 	Vector<pair<int, data_t>> nodes = Map.list();
 	typedef bool(*cmpFunc)(const pair<int, data_t>&, const pair<int, data_t>&);
 	nodes.sort(cmpFunc{ [](const pair<int, data_t>& a, const pair<int, data_t> &b) {
-		// 依据关键词个数为第一关键字，总出现次数为第二关键字排序
+		// The number of keywords is the first keyword, and the total number of occurrences is the second keyword.
 		data_t aD = a.second ,bD = b.second;
 		return aD.cnt == bD.cnt ? aD.tot > bD.tot: aD.cnt > bD.cnt;
 	} });
@@ -221,7 +220,6 @@ Vector<std::pair<int, CharString>> FilmContentSystemApplication::recommend(int d
 			if (filmInfos[p.id()].name() == filmInfos[docId].name()) continue;
 			const FilmInfo &target = filmInfos[p.id()];
 
-			// 推荐依据 score = 评分/2 + 类型IoU*5 + 导演交集size + top5主演交集size + 标签交集size + 地区交集size
 			double score = target.rating()/2 + 5 * IoU(target.genres(), info.genres())
 				+ intersectionSize(target.directors(), info.directors())
 				+ intersectionSize(target.stars(), info.stars(), 5)
@@ -237,7 +235,6 @@ Vector<std::pair<int, CharString>> FilmContentSystemApplication::recommend(int d
 	for (int i = 0; i < min(nodes.size(), topK); i++)
 		res.push_back(std::make_pair(nodes[i].id, filmInfos[nodes[i].id].name()));
 	
-	// 如果不足topK，随意补全
 	int ptr = 0;
 	while (res.size() < topK && ptr<docCnt) {
 		bool flag = 0;
@@ -301,14 +298,14 @@ void FilmContentSystemApplication::doRecommend()
 		if (wcslen(line) == 0) continue;
 
 		if (!filmIdMap.find(line)) {
-			wfout << L"该电影不在数据库中，无法推荐" << std::endl;
+			wfout << L"This movie is not in the database and cannot be recommended" << std::endl;
 			continue;
 		}
 		int docId = filmIdMap[line];
-		// 参数 topK 设为10，是为了找到更多的相关电影
+
 		Vector<std::pair<int, CharString>> res = recommend(docId, 10);
 
-		// 推荐 5 个
+
 		for (int i = 0; i < 5; i++) {
 			if (i) wfout << ',';
 			wfout << '(' << res[i].first << ',' << res[i].second << ")";
